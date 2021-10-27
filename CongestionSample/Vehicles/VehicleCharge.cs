@@ -18,9 +18,9 @@ namespace CongestionSample.Vehicles
             _pmCharge = vehicleCharge.pmCharge;
         }
 
-        public double OneDayCharge(TimeSpan amTotal, TimeSpan pmTotal)
-         => amTotal.TotalMinutes / 60 * _amCharge +
-            pmTotal.TotalMinutes / 60 * _pmCharge;
+        public double OneDayCharge(double amTotal, double pmTotal)
+         => amTotal / 60 * _amCharge +
+            pmTotal / 60 * _pmCharge;
 
         public double TotalCharge(double timeSpentAM, double timeSpentPM, double continousDays, double oneDayPrice)
             => timeSpentAM / 60 * _amCharge +

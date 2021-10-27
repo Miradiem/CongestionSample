@@ -1,6 +1,5 @@
 ﻿using CongestionSample.Time;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace CongestionSample.App
@@ -39,15 +38,15 @@ namespace CongestionSample.App
             return fullDays;
         }
 
-        public (TimeSpan amTotal, TimeSpan pmTotal) ChargePeriod()
+        public (double amTotal, double pmTotal) ChargePeriod()
         {
-            var amTotal = _noon - _am;
-            var pmTotal = _pm - _noon;
+            var amTotal = (_noon - _am).TotalMinutes;
+            var pmTotal = (_pm - _noon).TotalMinutes;
 
             return (amTotal, pmTotal);
         }
 
-        public (double amTime, double pmTime) TimeSpent()
+        public (double amTime, double pmTime) TimeSpent(double continuousDays, double amTotal, double pmTotal)
         {
             double timeAM = 0;
             double timePM = 0;
@@ -97,6 +96,15 @@ namespace CongestionSample.App
                     timePM = (_pm - startHour).TotalMinutes;
                 }
             }
+
+            if (startHour == endHour)
+            {
+                timeAM = 0;
+                timePM = 0;
+            }
+
+            timeAM = timeAM + continuousDays * amTotal;
+            timePM = timePM + continuousDays * pmTotal;
 
             return (timeAM, timePM);
         }
