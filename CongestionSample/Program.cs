@@ -1,6 +1,5 @@
-﻿using CongestionSample.App;
-using CongestionSample.Time;
-using CongestionSample.Vehicles;
+﻿using CongestionSample.App.App;
+using CongestionSample.App.Vehicles;
 using System;
 
 namespace CongestionSample
@@ -17,19 +16,16 @@ namespace CongestionSample
             var to = new DateTime(2008, 04, 24, 14, 42, 0);
 
             var type = "Car";
-            double amTariff = 2;
-            double pmTariff = 2.5;
 
-            var congestion = new Congestion(
-                new ChargePeriod(am, pm, noon).CongestionPeriod(),
-                new DateAndTime(from, to));
-            var vehicle = new VehicleCharge(
-                new VehicleType(type, amTariff, pmTariff).Type().VehicleCharge()); 
+            var congestion = new Congestion(am, pm, noon, from, to);
+            var vehicle = new Vehicle(type); 
             var display = new CongestionDisplay();
 
             var commands = new CongestionCommand(vehicle, congestion, display);
 
             commands.Invoke();
         }
+
+        
     }
 }

@@ -1,44 +1,32 @@
-﻿using CongestionSample.Time;
-using System;
-using System.Linq;
+﻿using System;
+using System.Collections.Generic;
 
-namespace CongestionSample.App
-
+namespace CongestionSample.App.App
 {
     public class Congestion
     {
-        private readonly DateAndTime _dateAndTime;
-        private readonly TimeSpan _am = TimeSpan.Zero;
-        private readonly TimeSpan _pm = TimeSpan.Zero;
-        private readonly TimeSpan _noon = TimeSpan.Zero;
+        private readonly TimeSpan _am;
+        private readonly TimeSpan _pm;
+        private readonly TimeSpan _noon;
+        private readonly DateTime _from;
+        private readonly DateTime _to;
 
         public Congestion()
         {
 
         }
 
-        public Congestion((TimeSpan am, TimeSpan pm, TimeSpan noon) period, DateAndTime dateAndTime)
+        public Congestion(TimeSpan am, TimeSpan pm, TimeSpan noon, DateTime from, DateTime to)
         {
-            _am = period.am;
-            _pm = period.pm;
-            _noon = period.noon;
-            _dateAndTime = dateAndTime;
+            _am = am;
+            _pm = pm;
+            _noon = noon;
+
+            _from = from;
+            _to = to;
         }
 
-        public double ContinuousDays()
-        {
-            var weekEnds = _dateAndTime.Week().weekEnds.Count();
-            var from = _dateAndTime.From();
-            var to = _dateAndTime.To();
-
-            var fullDays = Math.Round((to - from).TotalDays, MidpointRounding.ToZero);
-
-            if (weekEnds > 0) { return fullDays - weekEnds; }
-
-            return fullDays;
-        }
-
-        public (double amTotal, double pmTotal) ChargePeriod()
+        public (double amTotal, double pmTotal) ChargePeriodTotal()
         {
             var amTotal = (_noon - _am).TotalMinutes;
             var pmTotal = (_pm - _noon).TotalMinutes;
@@ -46,13 +34,65 @@ namespace CongestionSample.App
             return (amTotal, pmTotal);
         }
 
-        public (double amTime, double pmTime) TimeSpent(double continuousDays, double amTotal, double pmTotal)
+        public double ContinuousDays()
+        {
+            var weekEnds = Week().weekEnds.Count;
+
+            var fullDays = Math.Round((_to - _from).TotalDays, MidpointRounding.ToZero);
+
+            if (weekEnds > 0) { return fullDays - weekEnds; }
+
+            return fullDays;
+        }
+
+        public (List<DateTime> weekDays, List<DateTime> weekEnds) Week()
+        {
+            var weekDays = new List<DateTime>();
+            var weekEnds = new List<DateTime>();
+
+            for (var dt = _from; dt <= _to; dt = dt.AddDays(1))
+            {
+                if (dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday)
+                { weekEnds.Add(dt); }
+
+                else
+                { weekDays.Add(dt); }
+            }
+
+            if (weekDays.Count == 1 && (_to.DayOfWeek != DayOfWeek.Saturday || _to.DayOfWeek != DayOfWeek.Sunday))
+            { weekDays.Add(_to); }
+
+            if (weekDays.Count >= 2)
+            {
+                if (_to.DayOfWeek == DayOfWeek.Saturday)
+                {
+                    weekDays.RemoveAt(weekDays.Count - 1);
+                    weekDays.Add(_to.AddDays(-1));
+                }
+
+                if (_to.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    weekDays.RemoveAt(weekDays.Count - 1);
+                    weekDays.Add(_to.AddDays(-2));
+                }
+
+                else
+                {
+                    weekDays.RemoveAt(weekDays.Count - 1);
+                    weekDays.Add(_to);
+                }
+            }
+
+            return (weekDays, weekEnds);
+        }
+
+        public (double amTime, double pmTime) TimeCharged(double continuousDays, double amTotal, double pmTotal)
         {
             double timeAM = 0;
             double timePM = 0;
 
-            var startHour = _dateAndTime.Week().weekDays.First().TimeOfDay;
-            var endHour = _dateAndTime.Week().weekDays.Last().TimeOfDay;
+            var startHour = _from.TimeOfDay;
+            var endHour = _to.TimeOfDay;
 
             if (startHour < _am) { startHour = _am; }
             if (endHour > _pm) { endHour = _pm; }

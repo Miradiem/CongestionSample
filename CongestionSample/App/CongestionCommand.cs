@@ -1,15 +1,15 @@
-﻿using CongestionSample.Vehicles;
+﻿using CongestionSample.App.Vehicles;
 
-namespace CongestionSample.App
+namespace CongestionSample.App.App
 {
     public class CongestionCommand
     {
         private readonly Congestion _congestion;
-        private readonly VehicleCharge _vehicle;
+        private readonly Vehicle _vehicle;
         private readonly CongestionDisplay _display;
 
         public CongestionCommand(
-            VehicleCharge vehicle,
+            Vehicle vehicle,
             Congestion congestion,
             CongestionDisplay display
             )
@@ -21,14 +21,14 @@ namespace CongestionSample.App
 
         public void Invoke()
         {
-            var period = _congestion.ChargePeriod();
-            var continousDays = _congestion.ContinuousDays();
-            var timeSpent= _congestion.TimeSpent(continousDays, period.amTotal, period.pmTotal);
+            var continuousDays = _congestion.ContinuousDays();
+            var period = _congestion.ChargePeriodTotal();
+            var timeSpent= _congestion.TimeCharged(continuousDays, period.amTotal, period.pmTotal);
 
-            var dayPrice = _vehicle.OneDayCharge(period.amTotal, period.pmTotal);
-            var amCharge = _vehicle.ChargeAM(timeSpent.amTime);
-            var pmCharge = _vehicle.ChargePM(timeSpent.pmTime);
-            var totalCharge = _vehicle.TotalCharge(timeSpent.amTime, timeSpent.pmTime, continousDays, dayPrice);
+            var dayPrice = _vehicle.PriceForDay(period.amTotal, period.pmTotal);
+            var amCharge = _vehicle.PriceForAM(timeSpent.amTime);
+            var pmCharge = _vehicle.PriceForPM(timeSpent.pmTime);
+            var totalCharge = _vehicle.TotalCharge(timeSpent.amTime, timeSpent.pmTime, continuousDays, dayPrice);
 
             _display.Show(timeSpent.amTime, timeSpent.pmTime, amCharge, pmCharge, totalCharge);
         }
