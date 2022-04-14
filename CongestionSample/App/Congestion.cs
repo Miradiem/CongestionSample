@@ -26,7 +26,8 @@ namespace CongestionSample.App.App
             _to = to;
         }
 
-        public (double amTotal, double pmTotal) ChargePeriodTotal()
+
+        public (double amTotal, double pmTotal) ChargePeriod()
         {
             var amTotal = (_noon - _am).TotalMinutes;
             var pmTotal = (_pm - _noon).TotalMinutes;
@@ -34,18 +35,7 @@ namespace CongestionSample.App.App
             return (amTotal, pmTotal);
         }
 
-        public double ContinuousDays()
-        {
-            var weekEnds = Week().weekEnds.Count;
-
-            var fullDays = Math.Round((_to - _from).TotalDays, MidpointRounding.ToZero);
-
-            if (weekEnds > 0) { return fullDays - weekEnds; }
-
-            return fullDays;
-        }
-
-        public (List<DateTime> weekDays, List<DateTime> weekEnds) Week()
+        private (List<DateTime> weekDays, List<DateTime> weekEnds) Week()
         {
             var weekDays = new List<DateTime>();
             var weekEnds = new List<DateTime>();
@@ -86,7 +76,18 @@ namespace CongestionSample.App.App
             return (weekDays, weekEnds);
         }
 
-        public (double amTime, double pmTime) TimeCharged(double continuousDays, double amTotal, double pmTotal)
+        public double ContinuousDays()
+        {
+            var weekEnds = Week().weekEnds.Count;
+
+            var fullDays = Math.Round((_to - _from).TotalDays, MidpointRounding.ToZero);
+
+            if (weekEnds > 0) { return fullDays - weekEnds; }
+
+            return fullDays;
+        }
+
+        public (double amTime, double pmTime) TimeCharged(double continuousDays, (double amTotal, double pmTotal) chargePeriod)
         {
             double timeAM = 0;
             double timePM = 0;
@@ -143,8 +144,8 @@ namespace CongestionSample.App.App
                 timePM = 0;
             }
 
-            timeAM = timeAM + continuousDays * amTotal;
-            timePM = timePM + continuousDays * pmTotal;
+            timeAM = timeAM + continuousDays * chargePeriod.amTotal;
+            timePM = timePM + continuousDays * chargePeriod.pmTotal;
 
             return (timeAM, timePM);
         }

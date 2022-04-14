@@ -21,11 +21,11 @@ namespace CongestionSample.App.Vehicles
         public double PriceForPM(double timeSpentPM)
           => timeSpentPM / 60 * VehicleType().pmTariff;
 
-        public double PriceForDay(double amTotal, double pmTotal)
+        public double OneDayPrice(double amTotal, double pmTotal)
          => amTotal / 60 * VehicleType().amTariff +
             pmTotal / 60 * VehicleType().pmTariff;
 
-        public double TotalCharge(double timeSpentAM, double timeSpentPM, double continousDays, double oneDayPrice)
+        public double TotalPrice(double timeSpentAM, double timeSpentPM, double continousDays, double oneDayPrice)
             => timeSpentAM / 60 * VehicleType().amTariff +
                timeSpentPM / 60 * VehicleType().pmTariff +
                continousDays * oneDayPrice;

@@ -22,13 +22,13 @@ namespace CongestionSample.App.App
         public void Invoke()
         {
             var continuousDays = _congestion.ContinuousDays();
-            var period = _congestion.ChargePeriodTotal();
-            var timeSpent= _congestion.TimeCharged(continuousDays, period.amTotal, period.pmTotal);
+            var period = _congestion.ChargePeriod();
+            var timeSpent= _congestion.TimeCharged(continuousDays, period);
 
-            var dayPrice = _vehicle.PriceForDay(period.amTotal, period.pmTotal);
+            var dayPrice = _vehicle.OneDayPrice(period.amTotal, period.pmTotal);
             var amCharge = _vehicle.PriceForAM(timeSpent.amTime);
             var pmCharge = _vehicle.PriceForPM(timeSpent.pmTime);
-            var totalCharge = _vehicle.TotalCharge(timeSpent.amTime, timeSpent.pmTime, continuousDays, dayPrice);
+            var totalCharge = _vehicle.TotalPrice(timeSpent.amTime, timeSpent.pmTime, continuousDays, dayPrice);
 
             _display.Show(timeSpent.amTime, timeSpent.pmTime, amCharge, pmCharge, totalCharge);
         }

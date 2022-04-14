@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongestionSample.App", "CongestionSample\CongestionSample.App.csproj", "{6D9F2686-1220-444C-A1DD-9AEB94B13C98}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongestionSample.Tests", "CongestionSample.Tests\CongestionSample.Tests.csproj", "{11A1218F-4515-4EED-B4C3-0296567E4B12}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CongestionSampleTests", "CongestionTestsXUnit\CongestionSampleTests.csproj", "{D51511B2-DDB1-499A-957C-B94E5585E4DB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{6D9F2686-1220-444C-A1DD-9AEB94B13C98} = {6D9F2686-1220-444C-A1DD-9AEB94B13C98}
 	EndProjectSection
@@ -20,10 +20,10 @@ Global
 		{6D9F2686-1220-444C-A1DD-9AEB94B13C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9F2686-1220-444C-A1DD-9AEB94B13C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9F2686-1220-444C-A1DD-9AEB94B13C98}.Release|Any CPU.Build.0 = Release|Any CPU
-		{11A1218F-4515-4EED-B4C3-0296567E4B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{11A1218F-4515-4EED-B4C3-0296567E4B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{11A1218F-4515-4EED-B4C3-0296567E4B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{11A1218F-4515-4EED-B4C3-0296567E4B12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D51511B2-DDB1-499A-957C-B94E5585E4DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D51511B2-DDB1-499A-957C-B94E5585E4DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D51511B2-DDB1-499A-957C-B94E5585E4DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D51511B2-DDB1-499A-957C-B94E5585E4DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
